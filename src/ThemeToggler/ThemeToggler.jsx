@@ -1,14 +1,13 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from '../Context/ThemeContext'
+import { CiDark } from "react-icons/ci";
+import { MdLightMode } from "react-icons/md";
 
 const ThemeToggler = () => {
     const {theme, toggleTheme}= useContext(ThemeContext)
   return (
-    <div className={`p-4 text-center ${theme==='light'? 'bg-white text-gray-500':'bg-gray-800 text-white'}`}>
-        <p>
-            CurrentTheme: {theme}
-        </p>
-        <button onClick={toggleTheme}>Switch to {theme === 'light'?" Dark":"Light"}</button>
+    <div>
+        <button onClick={toggleTheme} >{theme === 'light'?<CiDark size={"30px"}/>:<MdLightMode size={"30px"}/>}</button>
     </div>
   )
 }

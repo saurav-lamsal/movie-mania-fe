@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './App.css'
 import Footer from './Footer/Footer'
 import NavBar from './Navbar/NavBar'
@@ -10,7 +10,7 @@ import {BrowserRouter , Routes, Route, } from 'react-router-dom'
 import Trending from './pages/Trending'
 import MovieDetails from './pages/MovieDetails'
 import ThemeToggler from './ThemeToggler/ThemeToggler'
-import { ThemeProvider } from './Context/ThemeContext'
+import { ThemeContext, ThemeProvider } from './Context/ThemeContext'
 
 const moviesData =[
   {
@@ -32,6 +32,9 @@ const moviesData =[
 
 function App() {
   const [searchTerm, setSearchTerm]= useState("")
+  const {theme, toggleTheme}= useContext(ThemeContext)
+  console.log(theme,"the");
+
   const [movieData, setMovieData]= useState([])
   const url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc"
  
@@ -53,6 +56,7 @@ const isFetching= true;
     getMovies()
   },[isFetching])
 
+  
 
   //Filter movie on the basis of search
   const filterMovies = moviesData.filter((items)=>items.title.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -62,7 +66,7 @@ const isFetching= true;
 
     <ThemeProvider>
 
-      <ThemeToggler/>
+  
 
   <BrowserRouter>
     <NavBar />
@@ -88,7 +92,6 @@ const isFetching= true;
   </Routes>
     <Footer/>
   </BrowserRouter>
-
   </ThemeProvider>
    
 

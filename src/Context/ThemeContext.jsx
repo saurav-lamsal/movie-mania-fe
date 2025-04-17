@@ -20,7 +20,9 @@ export const ThemeProvider = ({children}) =>{
 
 return(
     <ThemeContext.Provider value={contextValue}>
+       <div className={`${theme==='dark'? 'bg-white text-gray-500':'bg-gray-800 text-white'}`}>
         {children}
+        </div>
     </ThemeContext.Provider>
 )
 }
