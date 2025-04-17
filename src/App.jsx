@@ -9,6 +9,8 @@ import Home from './pages/Home'
 import {BrowserRouter , Routes, Route, } from 'react-router-dom'
 import Trending from './pages/Trending'
 import MovieDetails from './pages/MovieDetails'
+import ThemeToggler from './ThemeToggler/ThemeToggler'
+import { ThemeProvider } from './Context/ThemeContext'
 
 const moviesData =[
   {
@@ -57,7 +59,11 @@ const isFetching= true;
  
   // console.log(filterMovies,"ff");
   return (
-  
+
+    <ThemeProvider>
+
+      <ThemeToggler/>
+
   <BrowserRouter>
     <NavBar />
     <input type='text' placeholder='Search movies...' value={searchTerm} onChange={(event)=> setSearchTerm(event.target.value)}/>
@@ -83,6 +89,7 @@ const isFetching= true;
     <Footer/>
   </BrowserRouter>
 
+  </ThemeProvider>
    
 
   )

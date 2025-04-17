@@ -3,15 +3,21 @@ import './card.css'
 import { Link } from 'react-router-dom'
 const Card = ({content, title, genre, imgSrc, id, addFavourite}) => {
   return (
-    <div className='movie-card'>
-        <img src={imgSrc} style={{height:"full", width: "100%"}}>
+    <div className='bg-gray-800  text-white rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-105'>
+        <img src={imgSrc} className='w-full h-70 object-cover'>
         </img>
-        <h2>{title}</h2>
-        <h5>{genre}</h5>
-        <p>{content}</p>
-        <Link to={`/movie-details/${id}`}><button>Details...</button></Link>
+        <div className='p-4 h-38 overflow-hidden'>
+
+        <h2 className='text-xl font-bold '>{title}</h2>
+        <h5 className='text-sm text-gray-400 mb-2'>{genre}</h5>
+        <p className='text-sm text-gray-100'>{content}</p>
+        </div>
+        <div className='flex justify-between p-4' >
+
+        <Link to={`/movie-details/${id}`}><button  >Details...</button></Link>
         
-        <button onClick={addFavourite}>💗</button>
+        <button onClick={addFavourite} >💗</button>
+        </div>
         </div>
   )
 }
