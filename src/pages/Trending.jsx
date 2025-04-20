@@ -15,5 +15,4 @@ export default Trending
 
 // Theory part:
 // useContext --> Global state management --> 
-
-// 
+  

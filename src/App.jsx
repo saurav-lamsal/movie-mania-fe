@@ -1,16 +1,19 @@
 
-import { useContext, useEffect, useState } from 'react'
+import { lazy, Suspense, useContext, useEffect, useState } from 'react'
 import './App.css'
 import Footer from './Footer/Footer'
 import NavBar from './Navbar/NavBar'
 import ToggleTheme from './ToggleTheme/ToggleTheme'
 import Card from './card/Card'
-import Home from './pages/Home'
+// import Home from './pages/Home'
 import {BrowserRouter , Routes, Route, } from 'react-router-dom'
-import Trending from './pages/Trending'
+// import Trending from './pages/Trending'
 import MovieDetails from './pages/MovieDetails'
 import ThemeToggler from './ThemeToggler/ThemeToggler'
 import { ThemeContext, ThemeProvider } from './Context/ThemeContext'
+import { AuthProvider } from './auth/AuthContex'
+import PrivateRoute from './auth/PrivateRoute'
+import Login from './pages/Login'
 
 const moviesData =[
   {
@@ -29,6 +32,10 @@ const moviesData =[
     genre: "Romance"
   }
 ]
+
+//implementing lazy loading in home and trending pages
+const Trending =lazy(()=> import('./pages/Trending'))
+const Home = lazy(()=>import('./pages/Home'))
 
 function App() {
   const [searchTerm, setSearchTerm]= useState("")
@@ -60,15 +67,10 @@ const isFetching= true;
 
   //Filter movie on the basis of search
   const filterMovies = moviesData.filter((items)=>items.title.toLowerCase().includes(searchTerm.toLowerCase()));
- 
   // console.log(filterMovies,"ff");
   return (
 
-    <ThemeProvider>
-
-  
-
-  <BrowserRouter>
+    <AuthProvider>
     <NavBar />
     <input type='text' placeholder='Search movies...' value={searchTerm} onChange={(event)=> setSearchTerm(event.target.value)}/>
     {/* <div>
@@ -85,16 +87,21 @@ const isFetching= true;
           )}
           </div> */}
     {/* <ToggleTheme/> */}
+    <Suspense fallback={<div>Loading...</div>}>
     <Routes>
+      <Route path='/login' element={<Login/>} />
       <Route path="/" element={<Home searchTerm={searchTerm}/>}/>
-      <Route path='/trending' element={<Trending/>}/>
+      <Route path='/trending' element={
+        <PrivateRoute>
+          <Trending/>
+        </PrivateRoute>
+        }/>
       <Route path='/movie-details/:id' element={<MovieDetails/>} />
   </Routes>
+    </Suspense>
     <Footer/>
-  </BrowserRouter>
-  </ThemeProvider>
-   
-
+    </AuthProvider>
+  
   )
 }
 

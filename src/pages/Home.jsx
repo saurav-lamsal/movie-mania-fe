@@ -1,35 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../card/Card';
+import useFetchMovies from '../services/fetchdata';
 
 const Home = ({ searchTerm }) => {
-  const [movieData, setMovieData] = useState([]);
   const [searchData, setSearchData] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
+  
   const url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc";
   const searchUrl = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=en-US&page=1`;
+ 
+  const {data: movieData, isLoading}= useFetchMovies(url)
 
-  // Fetch movies from the discover endpoint.
-  const getMovies = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch(url, {
-        method: "GET",
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OTYzMGZlOTkzNzM1NGNmYjM3MjhjMjI5NDhmOWE0MyIsIm5iZiI6MTc0MzUxMTM3OC43MTgwMDAyLCJzdWIiOiI2N2ViZGY1MjU4ZTBhYTIzMzhmYjEwMjgiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.3-eh4jUswnQR6RwsBMo6QvFKYQH98sGxeMzLem_OK64'
-        }
-      });
-      const data = await res.json();
-      console.log(data.results, "item results");
-      setMovieData(data.results);
-    } catch (error) {
-      console.error("Error fetching movies:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  console.log(movieData,"data");
 
   const getSearchMovies = async () => {
     try {
@@ -52,9 +34,6 @@ const Home = ({ searchTerm }) => {
     setFavorites( );
   }, []);
 
-  useEffect(() => {
-    getMovies();
-  }, []);
 
   useEffect(() => {
     if (searchTerm) {
